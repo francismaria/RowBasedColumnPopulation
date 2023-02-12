@@ -45,10 +45,9 @@ object Main extends App {
     * existing row values, more specifically, an invalid value (= "NO") if any null
     * value is present in the row's columns or an valid value (= "YES") otherwise.
     *
-    * @param rowColumnValues all column values of the row
     * @return new column value
     */
-  def populateContent(rowColumnValues: Array[Column]): Column = {
+  def populateContent(): Column = {
     val nullValueBooleanConditionColumn = lit(hasAnyNullValue(struct("*")))
 
     when(nullValueBooleanConditionColumn, INVALID_DATA).otherwise(VALID_DATA)
@@ -62,7 +61,7 @@ object Main extends App {
     * @return dataset with new validation column
     */
   def createValidationColumn(dataframe: Dataset[Row]): Dataset[Row] = {
-    df.withColumn("valid_record", populateContent(df.columns.map(col)))
+    df.withColumn("valid_record", populateContent())
   }
 
   /* -------------------------------- *
